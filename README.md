@@ -1,23 +1,20 @@
-# Rails Application Tasks
+# RoR Intern Tasks
 
-This repository contains solutions for the following Rails tasks:
+This repository contains my solutions for the following tasks:
 
-1. **Add a Custom Route** (`/about`)  
-2. **Set Up a Model with Associations** (Author → Post)  
-3. **Deploy a Rails Application** (Preparation & Instructions)
+1. **Add a Custom Route (`/about`)**  
+2. **Set Up a Model with Associations (Author → Post)**  
+3. **Prepare for Deployment (Heroku or Other Platforms)**
 
 ---
 
-## 1. Project Setup
-
-Follow these steps to set up the Rails project locally.
+## 1. Getting Started
 
 ### Prerequisites
-
-- Ruby (version 3.0.0 or later)
-- Rails (version 7.0.0 or later)
-- PostgreSQL or any other preferred database
-- Git
+- **Ruby** (3.x or later)
+- **Rails** (7.x or later)
+- **PostgreSQL** (Version 9.3 and up)
+- **Git**
 
 ### Installation
 
@@ -25,58 +22,81 @@ Follow these steps to set up the Rails project locally.
    ```bash
    git clone https://github.com/basitali111/my_interview_app.git
    ```
-   Change into the project directory:
+   Navigate into the project folder:
    ```bash
    cd my_interview_app
    ```
 
-2. **Install Gems**  
+2. **Install Dependencies**  
    ```bash
    bundle install
    ```
 
-3. **Set up the Database**  
-   - Update your `config/database.yml` with your local database credentials.
-   - Run migrations:
-     ```bash
-     rails db:create
-     rails db:migrate
-     ```
+3. **Database Configuration**
 
-4. **Run the Rails Server**  
+   By default, this application is configured to use PostgreSQL with the following settings in `config/database.yml`:
+
+   ```yml
+   default: &default
+     adapter: postgresql
+     encoding: unicode
+     username: basit
+     password: basit
+     pool: <%= ENV.fetch("RAILS_MAX_THREADS") { 5 } %>
+
+   development:
+     <<: *default
+     database: my_interview_app_development
+
+   test:
+     <<: *default
+     database: my_interview_app_test
+
+   production:
+     <<: *default
+     database: my_interview_app_production
+     username: my_interview_app
+     password: <%= ENV["MY_INTERVIEW_APP_DATABASE_PASSWORD"] %>
+   ```
+
+   - For **development** and **test** environments, the default username and password are `basit` / `basit`.
+   - For **production**, the default username is `my_interview_app`, and the password is retrieved from the environment variable `MY_INTERVIEW_APP_DATABASE_PASSWORD`.  
+   
+   **Important:** Update these credentials to match your local PostgreSQL setup. If you prefer different credentials, open `config/database.yml` and change the `username` and `password` fields accordingly.
+
+4. **Create and Migrate the Database**
+   ```bash
+   rails db:create
+   rails db:migrate
+   ```
+
+5. **Run the Application**  
    ```bash
    rails server
    ```
-   Open [http://localhost:3000](http://localhost:3000) in your browser.
+   Open your browser at [http://localhost:3000](http://localhost:3000) to view the application.
 
 ---
 
-## 2. Custom Route `/about`
+## 2. Custom Route: `/about`
 
-- A new route `/about` points to a static "About Us" page.
-- The page is styled using [Bootstrap](https://getbootstrap.com/).
+- A custom route `/about` has been added, leading to a static "About Us" page.
+- This page is styled with **Bootstrap**.
 
-To see the "About Us" page, visit:  
+To access the page, visit:  
 ```
 http://localhost:3000/about
 ```
 
 ---
 
-## 3. Model with Associations (Author → Post)
+## 3. Model with Associations
 
-- A new `Author` model has been created with a one-to-many association to `Post`.
-- Deleting an `Author` automatically deletes all associated `Posts`.
+- **Author** model: `has_many :posts, dependent: :destroy`
+- **Post** model: `belongs_to :author`
+- Deleting an Author automatically deletes their Posts.
 
-#### Generating the Models
-
-```bash
-rails generate model Author name:string
-rails generate model Post title:string content:text author:references
-rails db:migrate
-```
-
-#### Association
+### Example
 
 ```ruby
 # app/models/author.rb
@@ -94,19 +114,14 @@ end
 
 ## 4. Deployment Preparation
 
-### Why Not Deployed to Heroku?
-
-Heroku’s free tier for Rails applications has been discontinued.
-
-## Feedback & Contributions
-
-If you have any feedback or would like any changes to be made, please let me know or open an issue in this repository. I’m happy to accommodate any requests you may have.
-
-**Thank you for reviewing this project!**
-
-```
+### Why It’s Not Deployed to Heroku
+- Heroku’s free tier is no longer available..
 
 ---
 
-If you have any questions or requests, feel free to reach out.  
-Thank you!
+## Feedback or Changes
+
+If you need any additional clarifications or modifications, please don’t hesitate to let me know. I’m open to revisiting any part of this solution to better match your requirements.
+
+**Thank you!**
+```
